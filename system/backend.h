@@ -22,17 +22,13 @@ class Item{
     Item findItemByName(string name){
         //TODO: connect to Mongodb to find item by name
     }
-    bool IsValidItem(){
-        if(id == -1){
-            return false;
-        }
-        return true;
-    }
+    bool isValidItem(){ return id == -1 ? false : true; }
 };
 
 class Cart{
     private:
         std::map<Item, int> cart_items;
+        double subtotal;
     protected:
 
     public:
@@ -53,7 +49,7 @@ class Cart{
             Item newItem;
             if(int(log10(num)) + 1 == 12){
                 newItem.findItemByUPC(num);
-                if(newItem.IsValidItem()){
+                if(newItem.isValidItem()){
                     map<Item, int>::iterator it;
                     it = cart_items.find(newItem);
                     if(it == cart_items.end()){
@@ -62,12 +58,10 @@ class Cart{
                         it->second++;
                     }
                     return 0;
-                }else{
-                    return -1;
                 }
             }else{
                 newItem.findItemById(num);
-                if(newItem.IsValidItem()){
+                if(newItem.isValidItem()){
                     map<Item, int>::iterator it;
                     it = cart_items.find(newItem);
                     if(it == cart_items.end()){
@@ -76,10 +70,9 @@ class Cart{
                         it->second++;
                     }
                     return 0;
-                }else{
-                    return -1;
                 }
             }
+            return -1;
         }
 
         int removeItemFromCart(int num){
