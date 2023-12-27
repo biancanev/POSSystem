@@ -4,14 +4,13 @@
 #include <map>
 #include <string>
 #include <cmath>
-#include "user.h"
 
 using namespace std;
 
 class Item{
-    private:
-        int id, upc, price;
-        string name;
+    int id, upc, price;
+    string name;
+
     protected:
     public:
     Item findItemById(int id){
@@ -27,67 +26,76 @@ class Item{
 };
 
 class Cart{
-    private:
-        std::map<Item, int> cart_items;
-        double subtotal;
     protected:
-
+        std::map<Item, int> cart_items;
+        double subtotal, tax, total;
     public:
         Cart(){}
-        std::map<Item, int> getCartContents(){
-            return this->cart_items;
-        }
-        /**
-         * Function: Add item to the cart. Verifies with a database that the item is a valid item
-         * Inputs(overloaded):
-         *      int id: id of the item to be searched for
-         * Return:
-         *      int status -
-         *          0: item successfully added to cart
-         *          -1: item is not a valid item
-        **/
-        int addItemtoCart(int num){
-            Item newItem;
-            if(int(log10(num)) + 1 == 12){
-                newItem.findItemByUPC(num);
-                if(newItem.isValidItem()){
-                    map<Item, int>::iterator it;
-                    it = cart_items.find(newItem);
-                    if(it == cart_items.end()){
-                        cart_items.insert(pair<Item, int>(newItem, 1));
-                    }else{
-                        it->second++;
-                    }
-                    return 0;
-                }
-            }else{
-                newItem.findItemById(num);
-                if(newItem.isValidItem()){
-                    map<Item, int>::iterator it;
-                    it = cart_items.find(newItem);
-                    if(it == cart_items.end()){
-                        cart_items.insert(pair<Item, int>(newItem, 1));
-                    }else{
-                        it->second++;
-                    }
-                    return 0;
-                }
-            }
-            return -1;
-        }
-
-        int removeItemFromCart(int num){
-            Item delItem;
-            map<Item, int>::iterator it;
-            it = cart_items.find(delItem);
-        }
+        std::map<Item, int> getCartContents(){ return this->cart_items; }
+        int addItemToCart(int); // item number
+        int removeItemFromCart(int); // item number
 };
+
+/**
+ * Function: Adds item to the cart. Verifies with a database that the item is a valid item
+ * Inputs(overloaded):
+ *      int id: id of the item to be searched for
+ * Return:
+ *      int status -
+ *          0: item successfully added to cart
+ *          -1: item is not a valid item
+**/
+int Cart::addItemToCart(int num){
+    Item newItem;
+    if(int(log10(num)) + 1 == 12){
+        newItem.findItemByUPC(num);
+        if(newItem.isValidItem()){
+            map<Item, int>::iterator it;
+            it = cart_items.find(newItem);
+            if(it == cart_items.end()){
+                cart_items.insert(pair<Item, int>(newItem, 1));
+            }else{
+                it->second++;
+            }
+            return 0;
+        }
+    }else{
+        newItem.findItemById(num);
+        if(newItem.isValidItem()){
+            map<Item, int>::iterator it;
+            it = cart_items.find(newItem);
+            if(it == cart_items.end()){
+                cart_items.insert(pair<Item, int>(newItem, 1));
+            }else{
+                it->second++;
+            }
+            return 0;
+        }
+    }
+    return -1;
+}
+
+int Cart::removeItemFromCart(int num){
+    Item delItem;
+    map<Item, int>::iterator it;
+    it = cart_items.find(delItem);
+}
 
 class Order : public Cart{
-    private:
         int orderNumber;
-        User user;
+        string name;
+        
     public:
-        int getOrderNumber(){return orderNumber;};
+        Order();
+        int getOrderNumber(){ return orderNumber; };
 };
+
+Order::Order()
+    : Cart() {
+        orderNumber = -1;
+        name = "";
+    }
+
+
+
 #endif
