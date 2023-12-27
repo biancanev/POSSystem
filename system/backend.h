@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <cmath>
+#include "user.h"
 
 using namespace std;
 
@@ -80,5 +81,13 @@ class Cart{
             map<Item, int>::iterator it;
             it = cart_items.find(delItem);
         }
+};
+
+class Order : public Cart{
+    private:
+        int orderNumber;
+        User user;
+    public:
+        int getOrderNumber(){return orderNumber;};
 };
 #endif
