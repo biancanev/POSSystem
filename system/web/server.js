@@ -24,7 +24,7 @@ app.use(sessions({
     resave: false
 }))
 
-var session
+var session;
 
 const PORT = 5000
 const connectDB = require("./db")
@@ -65,4 +65,3 @@ process.on("unhandledRejection", err => {
     console.log(`An error occurred: ${err.message}`)
     server.close(() => process.exit(1))
 })
-//
