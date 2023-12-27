@@ -9,6 +9,7 @@ class User{
         string username, fname, lname, address;
         int phone, id;
     public:
+        int getID() { return id; }
 
 };
 #endif
