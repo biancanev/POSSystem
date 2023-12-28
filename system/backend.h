@@ -8,33 +8,36 @@
 using namespace std;
 
 class Item{
-    int id, upc, price;
-    string name;
+        int id, upc, price;
+        string name;
 
     protected:
     public:
-    Item findItemById(int id){
-        //TODO: connect to Mongodb to find item by id
-    }
-    Item findItemByUPC(int upc){
-        //TODO: connect to Mongodb to find item by upc
-    }
-    Item findItemByName(string name){
-        //TODO: connect to Mongodb to find item by name
-    }
-    bool isValidItem(){ return id == -1 ? false : true; }
+        Item findItemById(int id){
+            //TODO: connect to Mongodb to find item by id
+        }
+        Item findItemByUPC(int upc){
+            //TODO: connect to Mongodb to find item by upc
+        }
+        Item findItemByName(string name){
+            //TODO: connect to Mongodb to find item by name
+        }
+        bool isValidItem(){ return id == -1 ? false : true; }
 };
 
 class Cart{
     protected:
-        std::map<Item, int> cart_items;
+        std::map<Item, int> cartItems;
         double subtotal, tax, total;
     public:
-        Cart(){}
-        std::map<Item, int> getCartContents(){ return this->cart_items; }
+        Cart();
+        std::map<Item, int> getCartContents(){ return this->cartItems; }
         int addItemToCart(int); // item number
         int removeItemFromCart(int); // item number
 };
+
+Cart::Cart()
+    : subtotal(0), tax(0), total(0) {}
 
 /**
  * Function: Adds item to the cart. Verifies with a database that the item is a valid item
@@ -51,9 +54,9 @@ int Cart::addItemToCart(int num){
         newItem.findItemByUPC(num);
         if(newItem.isValidItem()){
             map<Item, int>::iterator it;
-            it = cart_items.find(newItem);
-            if(it == cart_items.end()){
-                cart_items.insert(pair<Item, int>(newItem, 1));
+            it = cartItems.find(newItem);
+            if(it == cartItems.end()){
+                cartItems.insert(pair<Item, int>(newItem, 1));
             }else{
                 it->second++;
             }
@@ -63,9 +66,9 @@ int Cart::addItemToCart(int num){
         newItem.findItemById(num);
         if(newItem.isValidItem()){
             map<Item, int>::iterator it;
-            it = cart_items.find(newItem);
-            if(it == cart_items.end()){
-                cart_items.insert(pair<Item, int>(newItem, 1));
+            it = cartItems.find(newItem);
+            if(it == cartItems.end()){
+                cartItems.insert(pair<Item, int>(newItem, 1));
             }else{
                 it->second++;
             }
@@ -78,24 +81,20 @@ int Cart::addItemToCart(int num){
 int Cart::removeItemFromCart(int num){
     Item delItem;
     map<Item, int>::iterator it;
-    it = cart_items.find(delItem);
+    it = cartItems.find(delItem);
 }
 
 class Order : public Cart{
         int orderNumber;
-        string name;
+        string orderName;
         
     public:
-        Order();
+        Order(int, string); // order number, order name
         int getOrderNumber(){ return orderNumber; };
+
 };
 
-Order::Order()
-    : Cart() {
-        orderNumber = -1;
-        name = "";
-    }
-
-
+Order::Order(int num, string name)
+    : Cart(), orderNumber(num), orderName(name) {}
 
 #endif
