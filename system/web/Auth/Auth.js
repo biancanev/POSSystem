@@ -10,7 +10,7 @@ const jwt_secret = process.env.JWT_SECRET
 
 //Register function
 exports.register = async (req, res, next) => {
-    const { username, password } = req.body
+    const { username, password, email } = req.body
     if (password.length < 6) {
       return res.status(400).json({ message: "Password less than 6 characters" })
     }
@@ -19,6 +19,7 @@ exports.register = async (req, res, next) => {
         await User.create({
           username,
           password: hash,
+          email,
         }).then((user) => {
             const maxAge = 3 * 60 * 60
             const token = jwt.sign({id: user._id, username, role: user.role}, jwt_secret, {expiresIn: maxAge})
