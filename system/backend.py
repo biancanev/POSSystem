@@ -1,82 +1,62 @@
 import math as m
 
 class Item:
-    id = -1
-    upc = 0
-    price = 0
-    name = ""
-    
-    def __init__(self, id, upc, price, name):
-        self.id = id
-        self.upc = upc
-        self.price = price
-        self.name = name
+    def __init__(self):
+        self.id = int()
+        self.upc = int()
+        self.price = int()
+        self.name = str()
     
     def findItemById(id):
-        #TODO: connect to Mongodb to find item by id
+        # TODO: connect to Mongodb to find item by id
         pass
+    
     def findItemByUPC(upc):
-        #TODO: connect to Mongodb to find item by upc
+        # TODO: connect to Mongodb to find item by upc
         pass
+    
     def findItemByName(name):
-        #TODO: connect to Mongodb to find item by name
+        # TODO: connect to Mongodb to find item by name
         pass
+    
     def isValidItem(): return False if id == -1 else True
 
 class Cart:
-    cartItems = dict()
-    subtotal = 0
-    tax = 0
-    total = 0
-    def __init__(self, cartItems, subtotal, tax, total):
-        self.cartItems = cartItems
-        self.subtotal = subtotal
-        self.tax = tax
-        self.total = total
+    def __init__(self):
+        self.cartItems = dict()
+        self.subtotal = float()
+        self.tax = float()
+        self.total = float()
+
+    # -1: invalid item, 0: item added to cart
     def addItemToCart(self, num):
+        newItem = Item()
         if m.log10(num) + 1 == 12:
-            Item.findItemByUPC(num)
-            if Item.isValidItem():
-                map<Item, int>::iterator it;
-                it = cartItems.find(newItem);
-                if it == cartItems.end() {
-                    cartItems.insert(pair<Item, int>(newItem, 1));
-                }else{
-                    it->second++;
-                }
-                return 0;
-            }
-        }else{
-            newItem.findItemById(num);
-            if(newItem.isValidItem()){
-                map<Item, int>::iterator it;
-                it = cartItems.find(newItem);
-                if(it == cartItems.end()){
-                    cartItems.insert(pair<Item, int>(newItem, 1));
-                }else{
-                    it->second++;
-                }
-                return 0;
-            }
-        }
-        return -1;
-}
+            newItem.findItemByUPC(num)
+            if newItem.isValidItem():
+                if self.cartItems[newItem] == None:
+                    self.cartItems[newItem] = 1
+                else:
+                    self.cartItems[newItem] += 1
+                return 0
+        else:
+            newItem.findItemByUPC(num)
+            if newItem.isValidItem():
+                if self.cartItems[newItem] == None:
+                    self.cartItems[newItem] = 1
+                else:
+                    self.cartItems[newItem] += 1
+                return 0
+        return -1
 
-int Cart::removeItemFromCart(int num){
-    Item delItem;
-    map<Item, int>::iterator it;
-    it = cartItems.find(delItem);
-}
-
-class Order : public Cart{
-        int orderNumber;
-        string orderName;
+    def removeItemFromCart(self):
+        delItem = Item()
+        self.cartItems[delItem] -= 1
+    
+class Order(Cart):
+    def __init__(self):
+        self.orderNumber = int()
+        self.orderName = str()
         
-    public:
-        Order(int, string); // order number, order name
-        int getOrderNumber(){ return orderNumber; };
-        void findOrderByUPC();
-};
-
-Order::Order(int num, string name)
-    : Cart(), orderNumber(num), orderName(name) {}
+    def findOrderByUPC():
+        pass
