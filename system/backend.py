@@ -68,7 +68,6 @@ class Cart:
             self.subtotal += item.price
         self.tax = self.subtotal * 7.25
         self.total = self.subtotal + self.tax
-    
         
             
 cart = Cart()
@@ -76,8 +75,4 @@ cart.addItemToCart(123456)
 cart.addItemToCart(123456789012)
 cart.addItemToCart(111111)
 cart.addItemToCart(123456789000)
-<<<<<<< HEAD
 cart.displayCart()
-=======
-cart.displayCart()
->>>>>>> 6c9897be76b18d856ea810f367f3c1978852f730
