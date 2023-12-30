@@ -1,7 +1,9 @@
-import math
 import pymongo as pm
+from dotenv import load_dotenv
+import os
 
-client = pm.MongoClient("mongodb://localhost:27017")
+load_dotenv()
+client = pm.MongoClient(os.getenv("MONGODB_STR"))
 itemdb = client["itemdb"]
 items = itemdb["Items"]
 
@@ -54,23 +56,27 @@ class Cart:
         self.items = []
     def addItemToCart(self, num):
         newItem = Item()
-        if len(str(num)) == 12:
-            newItem.findItemByUPC(num)
-            self.items.append(newItem) if newItem.isValidItem() else print("Invalid UPC")
+        if type(num) is int:
+            if len(str(num)) == 12:
+                newItem.findItemByUPC(num)
+                self.items.append(newItem) if newItem.isValidItem() else print("Invalid UPC")
+            else:
+                newItem.findItemById(num)
+                self.items.append(newItem) if newItem.isValidItem() else print("Invalid ID")
         else:
-            newItem.findItemById(num)
-            self.items.append(newItem) if newItem.isValidItem() else print("Invalid ID")
+            newItem.findItemByName(num)
+            self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
     def displayCart(self):
         for item in self.items:
             print(item.id, item.name, ":", item.price)
+            
+class Order(Cart):
+    def __init__(self):
+        self.ordernumber = str()
             
 cart = Cart()
 cart.addItemToCart(123456)
 cart.addItemToCart(123456789012)
 cart.addItemToCart(111111)
 cart.addItemToCart(123456789000)
-<<<<<<< HEAD
 cart.displayCart()
-=======
-cart.displayCart()
->>>>>>> 6c9897be76b18d856ea810f367f3c1978852f730
