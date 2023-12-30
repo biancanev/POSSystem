@@ -63,6 +63,13 @@ class Cart:
     def displayCart(self):
         for item in self.items:
             print(item.id, item.name, ":", item.price)
+    def calculateTotal(self):
+        for item in self.items:
+            self.subtotal += item.price
+        self.tax = self.subtotal * 7.25
+        self.total = self.subtotal + self.tax
+    
+        
             
 cart = Cart()
 cart.addItemToCart(123456)
