@@ -13,6 +13,7 @@ class Item{
 
     protected:
     public:
+        Item();
         void findItemById(int id){
             //TODO: connect to Mongodb to find item by id
         }
@@ -24,6 +25,9 @@ class Item{
         }
         bool isValidItem(){ return id == -1 ? false : true; }
 };
+
+Item::Item()
+    : id(-1), upc(0), price(0), name("") {}
 
 class Cart{
     protected:
