@@ -13,13 +13,13 @@ class Item{
 
     protected:
     public:
-        Item findItemById(int id){
+        void findItemById(int id){
             //TODO: connect to Mongodb to find item by id
         }
-        Item findItemByUPC(int upc){
+        void findItemByUPC(int upc){
             //TODO: connect to Mongodb to find item by upc
         }
-        Item findItemByName(string name){
+        void findItemByName(string name){
             //TODO: connect to Mongodb to find item by name
         }
         bool isValidItem(){ return id == -1 ? false : true; }
@@ -91,7 +91,7 @@ class Order : public Cart{
     public:
         Order(int, string); // order number, order name
         int getOrderNumber(){ return orderNumber; };
-
+        void findOrderByUPC();
 };
 
 Order::Order(int num, string name)
