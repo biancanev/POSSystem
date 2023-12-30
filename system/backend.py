@@ -6,6 +6,8 @@ load_dotenv()
 client = pm.MongoClient(os.getenv("MONGODB_STR"))
 itemdb = client["itemdb"]
 items = itemdb["Items"]
+orderdb = client["orderdb"]
+orders = orderdb["Orders"]
 
 #test_item = {"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}
 
@@ -43,8 +45,16 @@ class Item:
             self.id = -1
         return
     def findItemByName(self, name):
-        #TODO: connect to Mongodb to find item by name
-        pass
+        query = {"name": name}
+        item = items.find_one(query)
+        if item is not None:
+            self.id = item["id"]
+            self.upc = item["upc"]
+            self.price = item["price"]
+            self.name = item["name"]
+        else:
+            self.id = -1
+        return
     def isValidItem(self):
         return False if self.id == -1 else True
 
@@ -68,7 +78,10 @@ class Cart:
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
     def displayCart(self):
         for item in self.items:
-            print(item.id, item.name, ":", item.price)
+            print(item.id, item.name, ":", item.price, "\n")
+        print("Subtotal: ", self.subtotal, "\n")
+        print("Tax: ", self.tax, "\n")
+        print("Total: ", self.total, "\n")
     def calculateTotal(self):
         for item in self.items:
             self.subtotal += item.price
@@ -78,7 +91,29 @@ class Cart:
             
 class Order(Cart):
     def __init__(self):
-        self.ordernumber = str()
+        self.orderNumber = str()
+        self.orderName = str()
+    def findOrderByName(self, name):
+        query = {"name": name}
+        order = orders.find_one(query)
+        if order is not None:
+            self.orderNumber = order["number"]
+            self.orderName = order["name"]
+        else:
+            self.orderNumber = -1
+        return
+    def findOrderByNumber(self, num):
+        query = {"number": num}
+        order = orders.find_one(query)
+        if order is not None:
+            self.orderNumber = order["number"]
+            self.orderName = order["name"]
+        else:
+            self.orderNumber = -1
+        return
+    def isValidOrder(self):
+        return False if self.orderNumber == -1 else True
+        
             
 cart = Cart()
 cart.addItemToCart(123456)
