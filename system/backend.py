@@ -84,7 +84,8 @@ class Cart:
         print("Total: ", self.total, "\n")
     def calculateTotal(self):
         for item in self.items:
-            self.subtotal += item.price
+            subtotal += item.price
+        self.subtotal = subtotal
         self.tax = self.subtotal * 7.25
         self.total = self.subtotal + self.tax
         
@@ -93,12 +94,14 @@ class Order(Cart):
     def __init__(self):
         self.orderNumber = str()
         self.orderName = str()
+    # tentative naming (not sure how the query thing works)
     def findOrderByName(self, name):
         query = {"name": name}
         order = orders.find_one(query)
         if order is not None:
             self.orderNumber = order["number"]
             self.orderName = order["name"]
+            self.items = order["items"]
         else:
             self.orderNumber = -1
         return
@@ -108,12 +111,14 @@ class Order(Cart):
         if order is not None:
             self.orderNumber = order["number"]
             self.orderName = order["name"]
+            self.items = order["items"]
         else:
             self.orderNumber = -1
         return
     def isValidOrder(self):
         return False if self.orderNumber == -1 else True
-        
+    def returnOrder(self):
+        pass
             
 cart = Cart()
 cart.addItemToCart(123456)
