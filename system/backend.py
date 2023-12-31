@@ -2,13 +2,16 @@ import pymongo as pm
 from dotenv import load_dotenv
 import os
 
+#Load environment variables
 load_dotenv()
 client = pm.MongoClient(os.getenv("MONGODB_STR"))
+#Load database and columns
 itemdb = client["itemdb"]
 items = itemdb["Items"]
-orderdb = client["orderdb"]
-orders = orderdb["Orders"]
+orders = itemdb["Orders"]
 
+#exampleOrder = {"orderNumber": "ABC123", "cart": {"subtotal": 12.34, "tax": 0.01025, "total": 13.61, "items": [{"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}]}}
+#orders.insert_one(exampleOrder)
 #test_item = {"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}
 
 #items.insert_one(test_item)
@@ -76,6 +79,8 @@ class Cart:
         else:
             newItem.findItemByName(num)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
+            
+        self.subtotal += newItem.price
     def displayCart(self):
         for item in self.items:
             print(item.id, item.name, ":", item.price, "\n")
@@ -92,19 +97,12 @@ class Cart:
             
 class Order(Cart):
     def __init__(self):
-        self.orderNumber = str()
-        self.orderName = str()
-    # tentative naming (not sure how the query thing works)
-    def findOrderByName(self, name):
-        query = {"name": name}
-        order = orders.find_one(query)
-        if order is not None:
-            self.orderNumber = order["number"]
-            self.orderName = order["name"]
-            self.items = order["items"]
-        else:
-            self.orderNumber = -1
-        return
+        self.ordernumber = str()
+        Cart.__init__(self)
+        
+    def saveOrder(self):
+        order = Order()
+        
     def findOrderByNumber(self, num):
         query = {"number": num}
         order = orders.find_one(query)
@@ -115,14 +113,12 @@ class Order(Cart):
         else:
             self.orderNumber = -1
         return
-    def isValidOrder(self):
-        return False if self.orderNumber == -1 else True
-    def returnOrder(self):
-        pass
+        
+    def generateOrderNumber(self):
+        lastGeneratedNumber = orders.find().limit(1).sort({"$natural":-1})["orderNumber"]
+        print(lastGeneratedNumber)
+        
             
-cart = Cart()
-cart.addItemToCart(123456)
-cart.addItemToCart(123456789012)
-cart.addItemToCart(111111)
-cart.addItemToCart(123456789000)
-cart.displayCart()
+order = Order()
+order.addItemToCart(123456)
+order.generateOrderNumber()
