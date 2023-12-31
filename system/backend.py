@@ -83,10 +83,10 @@ class Cart:
         self.subtotal += newItem.price
     def displayCart(self):
         for item in self.items:
-            cart += item.id, item.name, ":", item.price, "\n"
-        cart += "Subtotal: ", self.subtotal, "\n"
-        cart += "Tax: ", self.tax, "\n"
-        cart += "Total: ", self.total, "\n"
+            cart += item.id + item.name + ":" + item.price, "\n"
+        cart += "Subtotal: " + self.subtotal + "\n"
+        cart += "Tax: " + self.tax + "\n"
+        cart += "Total: " + self.total + "\n"
         return cart
     def calculateTotal(self):
         self.tax = self.subtotal * 0.0725
