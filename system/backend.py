@@ -78,39 +78,25 @@ class Cart:
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
     def displayCart(self):
         for item in self.items:
-            print(item.id, item.name, ":", item.price, "\n")
-        print("Subtotal: ", self.subtotal, "\n")
-        print("Tax: ", self.tax, "\n")
-        print("Total: ", self.total, "\n")
+            cart += item.id, item.name, ":", item.price, "\n"
+        cart += "Subtotal: ", self.subtotal, "\n"
+        cart += "Tax: ", self.tax, "\n"
+        cart += "Total: ", self.total, "\n"
+        return cart
     def calculateTotal(self):
-        for item in self.items:
-            subtotal += item.price
-        self.subtotal = subtotal
-        self.tax = self.subtotal * 7.25
+        self.tax = self.subtotal * 0.0725
         self.total = self.subtotal + self.tax
         
             
 class Order(Cart):
     def __init__(self):
         self.orderNumber = str()
-        self.orderName = str()
     # tentative naming (not sure how the query thing works)
-    def findOrderByName(self, name):
-        query = {"name": name}
-        order = orders.find_one(query)
-        if order is not None:
-            self.orderNumber = order["number"]
-            self.orderName = order["name"]
-            self.items = order["items"]
-        else:
-            self.orderNumber = -1
-        return
     def findOrderByNumber(self, num):
         query = {"number": num}
         order = orders.find_one(query)
         if order is not None:
             self.orderNumber = order["number"]
-            self.orderName = order["name"]
             self.items = order["items"]
         else:
             self.orderNumber = -1
@@ -119,10 +105,3 @@ class Order(Cart):
         return False if self.orderNumber == -1 else True
     def returnOrder(self):
         pass
-            
-cart = Cart()
-cart.addItemToCart(123456)
-cart.addItemToCart(123456789012)
-cart.addItemToCart(111111)
-cart.addItemToCart(123456789000)
-cart.displayCart()
