@@ -89,7 +89,7 @@ class Cart:
         cart += "Total: ", self.total, "\n"
         return cart
     def calculateTotal(self):
-        self.tax = self.subtotal * 1.0725
+        self.tax = self.subtotal * 0.0725
         self.total = self.subtotal + self.tax
         
             
