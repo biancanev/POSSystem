@@ -95,17 +95,13 @@ class Cart:
             
 class Order(Cart):
     def __init__(self):
-<<<<<<< HEAD
-        self.orderNumber = str()
-    # tentative naming (not sure how the query thing works)
-=======
         self.ordernumber = str()
         Cart.__init__(self)
-        
     def saveOrder(self):
         order = Order()
-        
->>>>>>> d130503ae92e1d3a3c2f76a0cc111d94071d7b22
+    def generateOrderNumber(self):
+        lastGeneratedNumber = orders.find().limit(1).sort({"$natural":-1})["orderNumber"]
+        print(lastGeneratedNumber)
     def findOrderByNumber(self, num):
         query = {"number": num}
         order = orders.find_one(query)
@@ -115,19 +111,11 @@ class Order(Cart):
         else:
             self.orderNumber = -1
         return
-<<<<<<< HEAD
     def isValidOrder(self):
         return False if self.orderNumber == -1 else True
     def returnOrder(self):
         pass
-=======
-        
-    def generateOrderNumber(self):
-        lastGeneratedNumber = orders.find().limit(1).sort({"$natural":-1})["orderNumber"]
-        print(lastGeneratedNumber)
-        
             
 order = Order()
 order.addItemToCart(123456)
 order.generateOrderNumber()
->>>>>>> d130503ae92e1d3a3c2f76a0cc111d94071d7b22
