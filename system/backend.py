@@ -86,9 +86,10 @@ class Order(Cart):
         order = Order()
         
     def generateOrderNumber(self):
-        lastGeneratedNumber = orders.find().limit(1).sort({"$natural":-1})
+        lastGeneratedNumber = orders.find().limit(1).sort({"$natural":-1})["orderNumber"]
         print(lastGeneratedNumber)
         
             
 order = Order()
 order.addItemToCart(123456)
+order.generateOrderNumber()
