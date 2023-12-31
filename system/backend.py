@@ -84,9 +84,7 @@ class Cart:
     def displayCart(self):
         for item in self.items:
             cart += item.id + item.name + ":" + item.price, "\n"
-        cart += "Subtotal: " + self.subtotal + "\n"
-        cart += "Tax: " + self.tax + "\n"
-        cart += "Total: " + self.total + "\n"
+        cart += "Subtotal: " + self.subtotal + "\n" + "Tax: " + self.tax + "\n" + "Total: " + self.total + "\n"
         return cart
     def calculateTotal(self):
         self.tax = self.subtotal * 0.0725
@@ -113,7 +111,8 @@ class Order(Cart):
         
     def generateOrderNumber(self):
         #lastGeneratedNumber = orders.find().limit(1).sort({"$natural":-1})["orderNumber"]
-        print(lastGeneratedNumber)
+        #print(lastGeneratedNumber)
+        pass
         
             
 order = Order()

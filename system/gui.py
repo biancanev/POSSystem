@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-import backend
+# import backend
 
 root = Tk()
 frame = ttk.Frame(root, padding = 10)
