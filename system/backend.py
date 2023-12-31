@@ -2,13 +2,16 @@ import pymongo as pm
 from dotenv import load_dotenv
 import os
 
+#Load environment variables
 load_dotenv()
 client = pm.MongoClient(os.getenv("MONGODB_STR"))
+#Load database and columns
 itemdb = client["itemdb"]
 items = itemdb["Items"]
-orderdb = client["orderdb"]
-orders = orderdb["Orders"]
+orders = itemdb["Orders"]
 
+#exampleOrder = {"orderNumber": "ABC123", "cart": {"subtotal": 12.34, "tax": 0.01025, "total": 13.61, "items": [{"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}]}}
+#orders.insert_one(exampleOrder)
 #test_item = {"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}
 
 #items.insert_one(test_item)
@@ -76,6 +79,8 @@ class Cart:
         else:
             newItem.findItemByName(num)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
+            
+        self.subtotal += newItem.price
     def displayCart(self):
         for item in self.items:
             cart += item.id, item.name, ":", item.price, "\n"
@@ -90,8 +95,17 @@ class Cart:
             
 class Order(Cart):
     def __init__(self):
+<<<<<<< HEAD
         self.orderNumber = str()
     # tentative naming (not sure how the query thing works)
+=======
+        self.ordernumber = str()
+        Cart.__init__(self)
+        
+    def saveOrder(self):
+        order = Order()
+        
+>>>>>>> d130503ae92e1d3a3c2f76a0cc111d94071d7b22
     def findOrderByNumber(self, num):
         query = {"number": num}
         order = orders.find_one(query)
@@ -101,7 +115,19 @@ class Order(Cart):
         else:
             self.orderNumber = -1
         return
+<<<<<<< HEAD
     def isValidOrder(self):
         return False if self.orderNumber == -1 else True
     def returnOrder(self):
         pass
+=======
+        
+    def generateOrderNumber(self):
+        lastGeneratedNumber = orders.find().limit(1).sort({"$natural":-1})["orderNumber"]
+        print(lastGeneratedNumber)
+        
+            
+order = Order()
+order.addItemToCart(123456)
+order.generateOrderNumber()
+>>>>>>> d130503ae92e1d3a3c2f76a0cc111d94071d7b22
