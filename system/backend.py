@@ -25,6 +25,7 @@ class Item:
         self.upc = int()
         self.price = int()
         self.name = str()
+        self.quantity = int()
     def findItemById(self, id):
         query = {"id": id}
         item = items.find_one(query)
@@ -60,6 +61,21 @@ class Item:
         return
     def isValidItem(self):
         return False if self.id == -1 else True
+    def saveItemToDB(self):
+        newItem = {"id": self.id, "upc": self.upc, "price": self.price, "name": self.name}
+        
+    def addItemToDB(self, quantity):
+        query = {"id": self.id}
+        item = items.find_one(query)
+        if item is not None:
+            self.quantity = item["quantity"] + quantity
+            items.update_one(query, {"$set": {"quantity": self.quantity}})
+        else:
+            self.quantity = quantity
+            newItem = {"id": self.id, "upc": self.upc, "price": self.price, "name": self.name, "quantity": self.quantity}
+            items.insert_one(newItem)
+        return
+            
 
 class Cart:
     def __init__(self):
@@ -82,16 +98,13 @@ class Cart:
             
         self.subtotal += newItem.price
     def displayCart(self):
+        cart = ""
         for item in self.items:
-            print(item.id, item.name, ":", item.price, "\n")
-        print("Subtotal: ", self.subtotal, "\n")
-        print("Tax: ", self.tax, "\n")
-        print("Total: ", self.total, "\n")
+            cart += str(item.id) + item.name + ":" + str(item.price), "\n"
+        cart += "Subtotal: " + str(self.subtotal) + "\n" + "Tax: " + str(self.tax) + "\n" + "Total: " + str(self.total) + "\n"
+        return cart
     def calculateTotal(self):
-        for item in self.items:
-            subtotal += item.price
-        self.subtotal = subtotal
-        self.tax = self.subtotal * 7.25
+        self.tax = self.subtotal * 0.0725
         self.total = self.subtotal + self.tax
         
             
@@ -101,24 +114,32 @@ class Order(Cart):
         Cart.__init__(self)
         
     def saveOrder(self):
-        order = Order()
+        newOrder = {"orderNumber": self.orderNumber, "cart": {"subtotal": self.subtotal, "tax": self.tax, "total": self.total, "items": self.items}}
+        orders.insert_one(newOrder)
         
     def findOrderByNumber(self, num):
-        query = {"number": num}
+        query = {"orderNumber": num}
         order = orders.find_one(query)
         if order is not None:
-            self.orderNumber = order["number"]
-            self.orderName = order["name"]
-            self.items = order["items"]
+            self.orderNumber = order["orderNumber"]
+            self.cart = order["cart"]
         else:
             self.orderNumber = -1
         return
         
     def generateOrderNumber(self):
-        lastGeneratedNumber = orders.find().limit(1).sort({"$natural":-1})["orderNumber"]
+        cursor = orders.find().limit(1).sort({"$natural":-1})
+        lastGeneratedNumber = cursor[0]["orderNumber"]
         print(lastGeneratedNumber)
         
             
 order = Order()
-order.addItemToCart(123456)
+order.findOrderByNumber("ABC123")
 order.generateOrderNumber()
+
+testItem = Item()
+testItem.id = 654321
+testItem.upc = 123451234512
+testItem.price = 23.45
+testItem.name = "Test Item 2"
+testItem.addItemToDB(2)
