@@ -10,15 +10,6 @@ itemdb = client["itemdb"]
 items = itemdb["Items"]
 orders = itemdb["Orders"]
 
-#exampleOrder = {"orderNumber": "ABC123", "cart": {"subtotal": 12.34, "tax": 0.01025, "total": 13.61, "items": [{"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}]}}
-#orders.insert_one(exampleOrder)
-#test_item = {"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}
-
-#items.insert_one(test_item)
-#query = {"name": "test"}
-#results = items.find_one(query)
-#print(results["id"])
-
 class Item:
     def __init__(self):
         self.id = int()
@@ -62,7 +53,8 @@ class Item:
     def isValidItem(self):
         return False if self.id == -1 else True
     def saveItemToDB(self):
-        newItem = {"id": self.id, "upc": self.upc, "price": self.price, "name": self.name}
+        newItem = {"id": self.id, "upc": self.upc, "price": self.price, "name": self.name, "quantity": 0}
+        items.insert_one(newItem)
         
     def addItemToDB(self, quantity):
         query = {"id": self.id}
@@ -75,6 +67,17 @@ class Item:
             newItem = {"id": self.id, "upc": self.upc, "price": self.price, "name": self.name, "quantity": self.quantity}
             items.insert_one(newItem)
         return
+    def removeItemFromDB(self, quantity):
+        query = {"id": self.id}
+        item = items.find_one(query)
+        if item is not None:
+            self.quantity = item["quantity"] - quantity if self.quantity >= quantity else print("Invalid removal amount")
+            items.update_one(query, {"$set": {"quantity": self.quantity}})
+    
+    def deleteItemFromDB(self):
+        query = {"id": self.id}
+        items.delete_one(query)
+        
             
 
 class Cart:
@@ -95,7 +98,6 @@ class Cart:
         else:
             newItem.findItemByName(num)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
-            
         self.subtotal += newItem.price
     def displayCart(self):
         cart = ""
@@ -143,3 +145,12 @@ testItem.upc = 123451234512
 testItem.price = 23.45
 testItem.name = "Test Item 2"
 testItem.addItemToDB(2)
+
+#exampleOrder = {"orderNumber": "ABC123", "cart": {"subtotal": 12.34, "tax": 0.01025, "total": 13.61, "items": [{"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}]}}
+#orders.insert_one(exampleOrder)
+#test_item = {"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}
+
+#items.insert_one(test_item)
+#query = {"name": "test"}
+#results = items.find_one(query)
+#print(results["id"])
