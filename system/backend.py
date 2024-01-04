@@ -1,6 +1,7 @@
 import pymongo as pm
 from dotenv import load_dotenv
 import os
+import user
 
 #Load environment variables
 load_dotenv()
@@ -73,13 +74,11 @@ class Item:
         if item is not None:
             self.quantity = item["quantity"] - quantity if self.quantity >= quantity else print("Invalid removal amount")
             items.update_one(query, {"$set": {"quantity": self.quantity}})
-    
+        return
     def deleteItemFromDB(self):
         query = {"id": self.id}
-        items.delete_one(query)
-        
-            
-
+        items.delete_one(query)           
+        return
 class Cart:
     def __init__(self):
         self.subtotal = int()
@@ -113,26 +112,39 @@ class Cart:
 class Order(Cart):
     def __init__(self):
         self.ordernumber = str()
+        self.user = user.User()
+        self.deliveryAddress = self.user.address #default delivery address is to user's address
         Cart.__init__(self)
         
-    def saveOrder(self):
-        newOrder = {"orderNumber": self.orderNumber, "cart": {"subtotal": self.subtotal, "tax": self.tax, "total": self.total, "items": self.items}}
-        orders.insert_one(newOrder)
-        
-    def findOrderByNumber(self, num):
+    def findOrderByNumber(self, num:int)->int:
         query = {"orderNumber": num}
         order = orders.find_one(query)
         if order is not None:
             self.orderNumber = order["orderNumber"]
             self.cart = order["cart"]
-        else:
-            self.orderNumber = -1
-        return
+            return 1
+        self.orderNumber = None
+        return -1
         
     def generateOrderNumber(self):
         cursor = orders.find().limit(1).sort({"$natural":-1})
         lastGeneratedNumber = cursor[0]["orderNumber"]
         print(lastGeneratedNumber)
+        
+    def changeDeliveryAddress(self, newAddr:str)->str:
+        self.deliveryAddress = newAddr
+        return newAddr
+
+    def isValidOrder(self)->bool:
+        return True if self.orderNumber is not None and self.deliveryAddress is not None else False
+    
+    def saveOrder(self)->int:
+        if self.isValidOrder():
+            newOrder = {"orderNumber": self.orderNumber, "cart": {"subtotal": self.subtotal, "tax": self.tax, "total": self.total, "items": self.items}, "user": self.user}
+            orders.insert_one(newOrder)
+            return 1
+        print("Cannot save invalid order. Reason: Order field is none")
+        return -1
         
             
 order = Order()
