@@ -31,6 +31,7 @@ class Employee(User):
     def __init__(self):
         self.id = int()
         self.permissions = int()
+        User.__init__(self)
         
     def hasPermissions(self, req:int)->bool:
         return True if self.permissions >= req else False
