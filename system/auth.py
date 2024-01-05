@@ -30,6 +30,11 @@ def createAuthUser(username:str, password:str, fname:str, lname:str, phone:int, 
     newUser.createUser()
     return
 
+#basic delete
+def deleteAuthUser(username:str, password:str):
+    
+    return
+
 #test casing
 #createAuthUser("testUser", "123456", "Test", "User", 1234567890, "test.user@test.com")
 uname = input("Enter Username: ")
