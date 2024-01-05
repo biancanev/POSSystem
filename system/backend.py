@@ -65,8 +65,7 @@ class Item:
             items.update_one(query, {"$set": {"quantity": self.quantity}})
         else:
             self.quantity = quantity
-            newItem = {"id": self.id, "upc": self.upc, "price": self.price, "name": self.name, "quantity": self.quantity}
-            items.insert_one(newItem)
+            self.saveItemToDB()
         return
     def removeItemFromDB(self, quantity):
         query = {"id": self.id}
@@ -146,17 +145,6 @@ class Order(Cart):
         print("Cannot save invalid order. Reason: Order field is none")
         return -1
         
-            
-order = Order()
-order.findOrderByNumber("ABC123")
-order.generateOrderNumber()
-
-testItem = Item()
-testItem.id = 654321
-testItem.upc = 123451234512
-testItem.price = 23.45
-testItem.name = "Test Item 2"
-testItem.addItemToDB(2)
 
 #exampleOrder = {"orderNumber": "ABC123", "cart": {"subtotal": 12.34, "tax": 0.01025, "total": 13.61, "items": [{"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}]}}
 #orders.insert_one(exampleOrder)
