@@ -32,7 +32,8 @@ def createAuthUser(username:str, password:str, fname:str, lname:str, phone:int, 
 
 #basic delete
 def deleteAuthUser(username:str, password:str):
-    
+    if authenticateUser(username, password) is not None:
+        user.User().deleteUser(username)
     return
 
 #test casing

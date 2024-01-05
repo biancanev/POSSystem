@@ -24,6 +24,8 @@ class User:
     def getUserInfo(self, username:str)->dict:
         user = users.find_one({"username":username})
         return user
+    def deleteUser(self, username:str):
+        users.delete_one({"username": username})
     
 class Employee(User):
     def __init__(self):
