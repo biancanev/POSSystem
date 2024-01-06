@@ -104,7 +104,9 @@ class Cart:
         cart += "Subtotal: " + str(self.subtotal) + "\n" + "Tax: " + str(self.tax) + "\n" + "Total: " + str(self.total) + "\n"
         return cart
     def calculateTotal(self):
-        self.tax = self.subtotal * 0.0725
+        checkSub = 0
+        for item in self.items:
+            checkSub += item.price
         self.total = self.subtotal + self.tax
         
             
@@ -116,8 +118,7 @@ class Order(Cart):
         Cart.__init__(self)
         
     def findOrderByNumber(self, num:int)->int:
-        query = {"orderNumber": num}
-        order = orders.find_one(query)
+        order = orders.find_one({"orderNumber": num})
         if order is not None:
             self.orderNumber = order["orderNumber"]
             self.cart = order["cart"]
@@ -141,9 +142,12 @@ class Order(Cart):
         if self.isValidOrder():
             newOrder = {"orderNumber": self.orderNumber, "cart": {"subtotal": self.subtotal, "tax": self.tax, "total": self.total, "items": self.items}, "user": self.user}
             orders.insert_one(newOrder)
-            return 1
+            return 0
         print("Cannot save invalid order. Reason: Order field is none")
         return -1
+    
+    def voidOrder(self):
+        pass
         
 
 #exampleOrder = {"orderNumber": "ABC123", "cart": {"subtotal": 12.34, "tax": 0.01025, "total": 13.61, "items": [{"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}]}}
