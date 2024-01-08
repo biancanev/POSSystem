@@ -63,6 +63,7 @@ root_dir = Path(__file__).resolve().parent.parent
 fileName = root_dir / "system" / "bestbuy.png"
 img = Image.open(fileName)
 photo = ImageTk.PhotoImage(img)
+window.wm_iconphoto(False, photo)
 
 # Admin panel
 frm_admin = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
