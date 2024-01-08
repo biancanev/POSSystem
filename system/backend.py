@@ -104,7 +104,7 @@ class Cart:
         return cart
     def displayCartTotals(self):
         totals = ""
-        totals += "Subtotal: " + str(self.subtotal) + "\n" + "Tax: " + str(self.tax) + "\n" + "Total: " + str(self.total)
+        totals += "Subtotal: " + str(self.subtotal) + "\nTax: " + str(self.tax) + "\nTotal: " + str(self.total)
         return totals
     def calculateTotal(self):
         checkSub = 0
@@ -117,7 +117,7 @@ class Order(Cart):
     def __init__(self):
         self.ordernumber = str()
         self.user = user.User()
-        self.deliveryAddress = self.user.address #default delivery address is to user's address
+        self.deliveryAddress = self.user.address # default delivery address is to user's address
         Cart.__init__(self)
         
     def findOrderByNumber(self, num:int)->int:
