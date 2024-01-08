@@ -26,6 +26,9 @@ class User:
         return user
     def deleteUser(self, username:str):
         users.delete_one({"username": username})
+    def displayUser(self):
+        user = "Name: " + self.fname + " " + self.lname + "\nPhone #: " + str(self.phone) + "\nEmail: " + self.email + "\nAddress: " + self.address
+        return user
     
 class Employee(User):
     def __init__(self):
