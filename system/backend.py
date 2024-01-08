@@ -97,12 +97,15 @@ class Cart:
             newItem.findItemByName(num)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
         self.subtotal += newItem.price
-    def displayCart(self):
+    def displayCartItems(self):
         cart = ""
         for item in self.items:
             cart += str(item.id) + item.name + ":" + str(item.price), "\n"
-        cart += "Subtotal: " + str(self.subtotal) + "\n" + "Tax: " + str(self.tax) + "\n" + "Total: " + str(self.total) + "\n"
         return cart
+    def displayCartTotals(self):
+        totals = ""
+        totals += "Subtotal: " + str(self.subtotal) + "\n" + "Tax: " + str(self.tax) + "\n" + "Total: " + str(self.total)
+        return totals
     def calculateTotal(self):
         checkSub = 0
         for item in self.items:
