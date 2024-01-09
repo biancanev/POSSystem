@@ -61,19 +61,18 @@ order.user.phone = 1234567890
 order.user.email = "username@gmail.com"
 order.user.address = "12345 Street Name Blvd."
 
-def getItemFromText():
-    id = ent_search.get()
+def getItemFromText(entry):
+    id = Entry(entry).get()
     order.addItemToCart(id)
 
 # Window
 window  = Tk()
-#window.attributes('-fullscreen', True)
+# window.attributes('-fullscreen', True)
 window.option_add("*Font", 'Verdana 14')
 window.rowconfigure(0, weight = 1)
 window.columnconfigure(0, minsize = 250)
 window.columnconfigure(1, minsize = 900)
-window.columnconfigure(2, minsize = 800)
-window.bind('<Return>', getItemFromText())
+window.columnconfigure(2, minsize = 300, weight = 1)
 
 # Logo
 root_dir = Path(__file__).resolve().parent.parent
@@ -91,6 +90,7 @@ canvas.create_image(0, 0, anchor = "nw", image = photo)
 frm_middle = Frame(window)
 lbl_search = Label(frm_middle, text = "Search:", justify = "left", anchor = "w")
 ent_search = Entry(frm_middle)
+# window.bind('<Return>', getItemFromText(ent_search))
 lbl_categories = Label(frm_middle, text = "ID              Name                                      Price  ", 
                        font = "Courier 17", anchor = "w")
 txt_itemsDisplay = Text(frm_middle, width = 60, background = "#cccccc", font = "Courier 17")
@@ -101,7 +101,7 @@ lbl_totalsDisplay = Label(frm_middle, text = order.displayCartTotals(), foregrou
 
 # Customer info panel
 frm_customerInfo = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
-txt_customerInfo = Text(frm_customerInfo, width = 27)
+txt_customerInfo = Text(frm_customerInfo, width = 28)
 txt_customerInfo.insert("1.0", "Customer Info:\n" + order.user.displayUser())
 txt_customerInfo.configure(state = "disabled")
 btn_quit = Button(frm_customerInfo, text = "Quit", command = window.destroy)
