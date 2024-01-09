@@ -61,14 +61,19 @@ order.user.phone = 1234567890
 order.user.email = "username@gmail.com"
 order.user.address = "12345 Street Name Blvd."
 
+def getItemFromText():
+    id = ent_search.get()
+    order.addItemToCart(id)
+
 # Window
 window  = Tk()
-window.attributes('-fullscreen', True)
+#window.attributes('-fullscreen', True)
 window.option_add("*Font", 'Verdana 14')
 window.rowconfigure(0, weight = 1)
 window.columnconfigure(0, minsize = 250)
 window.columnconfigure(1, minsize = 900)
 window.columnconfigure(2, minsize = 800)
+window.bind('<Return>', getItemFromText())
 
 # Logo
 root_dir = Path(__file__).resolve().parent.parent
