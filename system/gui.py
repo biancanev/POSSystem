@@ -51,6 +51,15 @@ import backend
 
 # Order creation
 order = backend.Order()
+# test
+item = backend.Item()
+item.id, item.name, item.price = 123456789012, "Laptop", 700
+order.items.append(item)
+order.user.fname = "John"
+order.user.lname = "Smith"
+order.user.phone = 1234567890
+order.user.email = "username@gmail.com"
+order.user.address = "12345 Street Name Blvd."
 
 # Window
 window  = Tk()
@@ -77,7 +86,7 @@ canvas.create_image(0, 0, anchor = "nw", image = photo)
 frm_middle = Frame(window)
 lbl_search = Label(frm_middle, text = "Search:", justify = "left", anchor = "w")
 ent_search = Entry(frm_middle)
-lbl_categories = Label(frm_middle, text = "ID              Name                                       Price  ", 
+lbl_categories = Label(frm_middle, text = "ID              Name                                      Price  ", 
                        font = "Courier 17", anchor = "w")
 txt_itemsDisplay = Text(frm_middle, width = 60, background = "#cccccc", font = "Courier 17")
 txt_itemsDisplay.insert("1.0", order.displayCartItems())
