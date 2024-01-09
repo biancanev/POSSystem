@@ -152,10 +152,6 @@ class Order(Cart):
     def voidOrder(self):
         pass
     
-def keyEvents(event):
-    match event.char:
-        case '1':
-            pass
         
 
 #exampleOrder = {"orderNumber": "ABC123", "cart": {"subtotal": 12.34, "tax": 0.01025, "total": 13.61, "items": [{"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}]}}
