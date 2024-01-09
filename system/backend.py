@@ -85,6 +85,10 @@ class Cart:
         self.total = int()
         self.items = []
     def addItemToCart(self, num):
+        try:
+            num = int(num)
+        except:
+            pass
         newItem = Item()
         if type(num) is int:
             if len(str(num)) == 12:
@@ -97,6 +101,7 @@ class Cart:
             newItem.findItemByName(num)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
         self.subtotal += newItem.price
+        return
     def displayCartItems(self):
         cart = ""
         for item in self.items:
@@ -111,8 +116,7 @@ class Cart:
         for item in self.items:
             checkSub += item.price
         self.total = self.subtotal + self.tax
-        
-            
+                   
 class Order(Cart):
     def __init__(self):
         self.ordernumber = str()
@@ -151,6 +155,7 @@ class Order(Cart):
     
     def voidOrder(self):
         pass
+    
     
         
 
