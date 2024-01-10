@@ -123,7 +123,6 @@ class Order(Cart):
         self.user = user.User()
         self.deliveryAddress = self.user.address # default delivery address is to user's address
         Cart.__init__(self)
-        
     def findOrderByNumber(self, num:int)->int:
         order = orders.find_one({"orderNumber": num})
         if order is not None:
@@ -132,19 +131,15 @@ class Order(Cart):
             return 1
         self.orderNumber = None
         return -1
-        
     def generateOrderNumber(self):
         cursor = orders.find().limit(1).sort({"$natural":-1})
         lastGeneratedNumber = cursor[0]["orderNumber"]
         print(lastGeneratedNumber)
-        
     def changeDeliveryAddress(self, newAddr:str)->str:
         self.deliveryAddress = newAddr
         return newAddr
-
     def isValidOrder(self)->bool:
         return True if self.orderNumber is not None and self.deliveryAddress is not None else False
-    
     def saveOrder(self)->int:
         if self.isValidOrder():
             newOrder = {"orderNumber": self.orderNumber, "cart": {"subtotal": self.subtotal, "tax": self.tax, "total": self.total, "items": self.items}, "user": self.user}
@@ -152,7 +147,6 @@ class Order(Cart):
             return 0
         print("Cannot save invalid order. Reason: Order field is none")
         return -1
-    
     def voidOrder(self):
         pass
     

@@ -53,6 +53,8 @@ ent_search.bind('<Return>', getItemFromText)
 lbl_categories = Label(frm_middle, text = "ID              Name                                      Price  ", 
                        font = "Courier 17", anchor = "w")
 txt_itemsDisplay = Text(frm_middle, width = 60, background = "#cccccc", font = "Courier 17")
+for i in range(len(order.items)):
+    txt_itemsDisplay.delete(str(float(i + 1)), END)
 txt_itemsDisplay.insert("1.0", order.displayCartItems())
 txt_itemsDisplay.configure(state = "disabled")
 lbl_totalsDisplay = Label(frm_middle, text = order.displayCartTotals(), foreground = "red", 
