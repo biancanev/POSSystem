@@ -30,12 +30,9 @@ def getItemFromText(event = None):
     for i in range(4):
         txt_itemInfo.delete(str(float(i + 1)), END)
     txt_itemInfo.insert("1.0", "Item Info:\n" + order.items[len(order.items) - 1].displayItem())
-<<<<<<< HEAD
     img = ImageTk.PhotoImage(Image.open(order.items[len(order.items)-1].displayImage()))
     cnv_itemPic.create_image(0,0,image=img)
-=======
     txt_itemInfo.configure(state = "disabled")
->>>>>>> 7871e00f4e5298ddc4def6838514c6f318e18f0c
     return
 
 def get_path(filename):
@@ -130,7 +127,7 @@ frm_customerInfo = Frame(window, relief = RAISED, borderwidth = 2, background = 
 lbl_customerSearch = Label(frm_customerInfo, text = "Customer Search:", foreground = "white",
                            background = "#1072e3", justify = "left", anchor = "w")
 ent_customerSearch = Entry(frm_customerInfo)
-ent_customerSearch.bind('<Return>', )
+ent_customerSearch.bind('<Return>', order.user.getUserByPhoneNumber())
 txt_customerInfo = Text(frm_customerInfo, width = 28)
 
 txt_customerInfo.configure(state = "disabled")
