@@ -9,8 +9,6 @@ import sys
 order = backend.Order()
 # test
 item = backend.Item()
-item.id, item.name, item.price = 123456789012, "Laptop", 700
-order.items.append(item)
 order.user.fname = "John"
 order.user.lname = "Smith"
 order.user.phone = 1234567890
@@ -20,8 +18,13 @@ order.user.address = "12345 Street Name Blvd."
 def getItemFromText(event=None):
     id = ent_search.get()
     order.addItemToCart(id)
-    #update item display text
-    #update totals text
+    txt_itemsDisplay.configure(state="normal")
+    for i in range(len(order.items)):
+        txt_itemsDisplay.delete(str(float(i + 1)), END)
+    txt_itemsDisplay.insert("1.0", order.displayCartItems())
+    txt_itemsDisplay.configure(state="disabled")
+    lbl_totalsDisplay.config(text=order.displayCartTotals())
+    ent_search.delete(0, END)
     return
 
 def get_path(filename):
@@ -59,8 +62,6 @@ ent_search.bind('<Return>', getItemFromText)
 lbl_categories = Label(frm_middle, text = "ID              Name                                      Price  ", 
                        font = "Courier 17", anchor = "w")
 txt_itemsDisplay = Text(frm_middle, width = 60, background = "#cccccc", font = "Courier 17")
-for i in range(len(order.items)):
-    txt_itemsDisplay.delete(str(float(i + 1)), END)
 txt_itemsDisplay.insert("1.0", order.displayCartItems())
 txt_itemsDisplay.configure(state = "disabled")
 lbl_totalsDisplay = Label(frm_middle, text = order.displayCartTotals(), foreground = "red", 
