@@ -2,6 +2,7 @@ import pymongo as pm
 from dotenv import load_dotenv
 import os
 import user
+import gridfs
 
 #Load environment variables
 load_dotenv()
@@ -10,6 +11,8 @@ client = pm.MongoClient(os.getenv("MONGODB_STR"))
 itemdb = client["itemdb"]
 items = itemdb["Items"]
 orders = itemdb["Orders"]
+fsdb = client["filesystem"]
+fs = gridfs.GridFS(fsdb)
 
 class Item:
     def __init__(self):
@@ -18,6 +21,7 @@ class Item:
         self.price = int()
         self.name = str()
         self.quantity = int()
+        self.imageFilePath = str()
     def findItemById(self, id):
         query = {"id": id}
         item = items.find_one(query)
@@ -77,6 +81,11 @@ class Item:
         query = {"id": self.id}
         items.delete_one(query)           
         return
+    def uploadPicture(self, path:str):
+        with open(path, 'rb') as f:
+            contents = f.read()
+        fs.put(contents, filename=path)
+        self.imageFilePath = path
 class Cart:
     def __init__(self):
         self.subtotal = int()

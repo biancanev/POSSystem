@@ -44,6 +44,7 @@ window.columnconfigure(1, minsize = 350)
 window.columnconfigure(2, minsize = 300, weight = 1)
 window.columnconfigure(3, minsize = 300, weight = 1)
 
+
 # Logo
 root_dir = Path(__file__).resolve().parent.parent
 fileName = root_dir / "system" / "bestbuy.png"
