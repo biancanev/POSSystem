@@ -27,8 +27,11 @@ class User:
     def deleteUser(self, username:str):
         users.delete_one({"username": username})
     def displayUser(self):
-        user = "Name: " + self.fname + " " + self.lname + "\nPhone #: " + str(self.phone) + "\nEmail: " + self.email + "\nAddress: " + self.address
-        return user
+        userinfo = users.find_one({"phone": self.phone})
+        user = "Name: " + userinfo["fname"] + " " + userinfo["lname"] + "\nPhone #: " + str(userinfo["Phone"]) + "\nEmail: " + userinfo["fname"] + "\nAddress: " + userinfo["fname"] + "\nBest Buy Membership: " + userinfo["memberInfo"]["type"]
+        return user if user is not None else "No Customer Information Found"
+    def getUserByPhone(self, phone):
+        pass
     
 class Employee(User):
     def __init__(self):
@@ -38,5 +41,6 @@ class Employee(User):
         
     def hasPermissions(self, req:int)->bool:
         return True if self.permissions >= req else False
+
     
         

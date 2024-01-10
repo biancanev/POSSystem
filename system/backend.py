@@ -22,6 +22,7 @@ class Item:
         self.name = str()
         self.quantity = int()
         self.imageFilePath = str()
+        self.addons = {"plans": list(), "services": list, "accessories": list()}
     def findItemById(self, id):
         query = {"id": id}
         item = items.find_one(query)
@@ -86,6 +87,10 @@ class Item:
             contents = f.read()
         fs.put(contents, filename=path)
         self.imageFilePath = path
+    def displayImage(self):
+        file = fs.find_one({"filename": self.imageFilePath})
+        image = file.read()
+        return image
     def displayItem(self):
         item = "Name: " + self.name + "\nID: " + str(self.id) + "\nUPC: " + str(self.upc)
         return item

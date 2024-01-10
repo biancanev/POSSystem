@@ -27,6 +27,8 @@ def getItemFromText(event=None):
     lbl_totalsDisplay.config(text=order.displayCartTotals())
     ent_search.delete(0, END)
     txt_itemInfo.insert("1.0", "Item Info:\n" + order.items[len(order.items) - 1].displayItem())
+    img = ImageTk.PhotoImage(Image.open(order.items[len(order.items)-1].displayImage()))
+    cnv_itemPic.create_image(0,0,image=img)
     return
 
 def get_path(filename):
