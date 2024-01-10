@@ -86,6 +86,10 @@ class Item:
             contents = f.read()
         fs.put(contents, filename=path)
         self.imageFilePath = path
+    def displayItem(self):
+        item = "Name: " + self.name + "\nID: " + str(self.id) + "\nUPC: " + str(self.upc)
+        return item
+    
 class Cart:
     def __init__(self):
         self.subtotal = int()

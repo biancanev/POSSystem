@@ -26,6 +26,7 @@ def getItemFromText(event=None):
     txt_itemsDisplay.configure(state="disabled")
     lbl_totalsDisplay.config(text=order.displayCartTotals())
     ent_search.delete(0, END)
+    txt_itemInfo.insert("1.0", "Item Info:\n" + order.items[len(order.items) - 1].displayItem())
     return
 
 def get_path(filename):
@@ -37,13 +38,13 @@ def get_path(filename):
 # Window
 window  = Tk()
 # window.attributes('-fullscreen', True)
+window.title("Best Buy POS System")
 window.option_add("*Font", 'Verdana 14')
 window.rowconfigure(0, weight = 1)
 window.columnconfigure(0, minsize = 250, weight = 1)
 window.columnconfigure(1, minsize = 350)
 window.columnconfigure(2, minsize = 300, weight = 1)
 window.columnconfigure(3, minsize = 300, weight = 1)
-
 
 # Logo
 root_dir = Path(__file__).resolve().parent.parent
@@ -72,13 +73,6 @@ lbl_totalsDisplay = Label(frm_middle, text = order.displayCartTotals(), foregrou
                           justify = "right", anchor = "e", font = "Verdana 20 bold", relief = SUNKEN, borderwidth = 5)
 btn_total = Button(frm_middle, text = "Total")
 
-# Customer info panel
-frm_customerInfo = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
-txt_customerInfo = Text(frm_customerInfo, width = 28)
-txt_customerInfo.insert("1.0", "Customer Info:\n" + order.user.displayUser())
-txt_customerInfo.configure(state = "disabled")
-btn_quit = Button(frm_customerInfo, text = "Quit", command = window.destroy)
-
 # Item panel
 frm_itemInfo = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
 txt_itemInfo = Text(frm_itemInfo, width = 28)
@@ -92,6 +86,13 @@ nbk_itemOptions.add(frm_protection, sticky = "nsew", text = "Protection Plans")
 nbk_itemOptions.add(frm_services, sticky = "nsew", text = "Services")
 nbk_itemOptions.add(frm_accessories, sticky = "nsew", text = "Accessories")
 nbk_itemOptions.add(frm_other, sticky = "nsew", text = "Other")
+
+# Customer info panel
+frm_customerInfo = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
+txt_customerInfo = Text(frm_customerInfo, width = 28)
+txt_customerInfo.insert("1.0", "Customer Info:\n" + order.user.displayUser())
+txt_customerInfo.configure(state = "disabled")
+btn_quit = Button(frm_customerInfo, text = "Quit", command = window.destroy)
 
 # Grid
 cnv_logo.grid(row = 0, column = 0)
