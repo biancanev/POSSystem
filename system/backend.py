@@ -113,6 +113,8 @@ class Cart:
             newItem.findItemByName(num)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
         self.subtotal += newItem.price
+        self.tax = 0.1025 * self.subtotal
+        self.total = self.subtotal + self.tax
         return
     def displayCartItems(self):
         cart = ""
@@ -123,11 +125,6 @@ class Cart:
         totals = ""
         totals += "Subtotal: " + str(self.subtotal) + "\nTax: " + str(self.tax) + "\nTotal: " + str(self.total)
         return totals
-    def calculateTotal(self):
-        checkSub = 0
-        for item in self.items:
-            checkSub += item.price
-        self.total = self.subtotal + self.tax
                    
 class Order(Cart):
     def __init__(self):
