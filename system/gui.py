@@ -6,6 +6,8 @@ import backend
 import os
 import sys
 
+bestbuyblue = "#1072e3"
+
 # Order creation
 order = backend.Order()
 # test
@@ -52,17 +54,44 @@ def get_path(filename):
         return filename
     
 def openHistoryWindow(event = None):
-    historyWindow = Tk()
+    historyWindow = Toplevel(window)
     historyWindow.title("Purchase History")
+    historyWindow.rowconfigure(1, weight = 1)
+    historyWindow.columnconfigure(0, weight = 1)
     historyWindow.option_add("*Font", 'Verdana 14')
-
-    frm_purchaseHistory = Frame(historyWindow)
-    txt_purchaseHistory = Text(frm_purchaseHistory)
-    btn_close = Button(historyWindow, text = "Close", anchor = "e")
-
-    txt_customerInfo.grid(row = 0, column = 0, sticky = "ew")
-    frm_purchaseHistory.grid(row = 1, column = 0, sticky = "ew")
-    btn_close.grid(row = 2, column = 0, padx = 10)
+    historyWindow.configure(background = bestbuyblue)
+    
+    # Customer info panel
+    frm_custInfo = Frame(historyWindow, background = bestbuyblue)
+    lbl_custInfo = Label(frm_custInfo, width = 40, text = "Customer Info:", 
+                             foreground = "white",  background = bestbuyblue, anchor = "w")
+    txt_custInfo = Text(frm_custInfo, width = 40, height = 4)
+    
+    # Purchase history panel
+    frm_purchaseHistory = Frame(historyWindow, background = bestbuyblue)
+    lbl_purchaseHistory = Label(frm_purchaseHistory, width = 20, text = "Purchase History:", 
+                                foreground = "white", background = bestbuyblue, anchor = "w")
+    lbl_purchase = Label(frm_purchaseHistory, width = 20, text = "Purchase Info:", 
+                         foreground = "white", background = bestbuyblue, anchor = "w")
+    txt_purchaseHistory = Text(frm_purchaseHistory, width = 20)
+    txt_purchase = Text(frm_purchaseHistory, width = 20)
+    
+    btn_close = Button(historyWindow, text = "Close", command = lambda :historyWindow.destroy())
+    
+    # Grid
+    lbl_custInfo.grid(row = 0, column = 0, padx = 10, sticky = "ew")
+    txt_custInfo.grid(row = 1, column = 0, padx = 10, sticky = "nsew")
+    frm_custInfo.grid(row = 0, column = 0, sticky = "nsew")
+    frm_custInfo.grid_columnconfigure(0, weight = 1)
+    lbl_purchaseHistory.grid(row = 0, column = 0, padx = 10, sticky = "ew")
+    lbl_purchase.grid(row = 0, column = 1, padx = 10, sticky = "ew")
+    txt_purchaseHistory.grid(row = 1, column = 0, padx = 10, sticky = "nsew")
+    txt_purchase.grid(row = 1, column = 1, padx = 10, sticky = "nsew")
+    frm_purchaseHistory.grid(row = 1, column = 0, sticky = "nsew")
+    frm_purchaseHistory.grid_rowconfigure(1, weight = 1)
+    frm_purchaseHistory.grid_columnconfigure(0, weight = 1)
+    frm_purchaseHistory.grid_columnconfigure(1, weight = 1)
+    btn_close.grid(row = 2, column = 0, padx = 10, pady = 10, sticky = "e")
 
     historyWindow.mainloop()
 
@@ -90,10 +119,10 @@ photo = ImageTk.PhotoImage(img)
 window.wm_iconphoto(False, photo)
 
 # Admin panel
-frm_admin = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
-cnv_logo = Canvas(frm_admin, background = "#1072e3", width = photo.width(), height = photo.height(), highlightthickness = 0)
+frm_admin = Frame(window, relief = RAISED, borderwidth = 2, background = bestbuyblue)
+cnv_logo = Canvas(frm_admin, background = bestbuyblue, width = photo.width(), height = photo.height(), highlightthickness = 0)
 cnv_logo.create_image(0, 0, anchor = "nw", image = photo)
-btn_purchaseHist = Button(frm_admin, text = "Purchase History")
+btn_purchaseHist = Button(frm_admin, text = "Purchase History", command = openHistoryWindow)
 btn_reprintReceipt = Button(frm_admin, text = "Reprint Receipt")
 btn_voidTransaction = Button(frm_admin, text = "Void Transaction")
 
@@ -112,7 +141,7 @@ lbl_totalsDisplay = Label(frm_middle, text = order.displayCartTotals(), foregrou
 btn_total = Button(frm_middle, text = "Total")
 
 # Item panel
-frm_itemInfo = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
+frm_itemInfo = Frame(window, relief = RAISED, borderwidth = 2, background = bestbuyblue)
 txt_itemInfo = Text(frm_itemInfo, width = 28, height = 4)
 txt_itemInfo.configure(state = "disabled")
 cnv_itemPic = Canvas(frm_itemInfo)
@@ -133,9 +162,9 @@ nbk_itemOptions.add(frm_accessories, sticky = "nsew", text = "Accessories")
 nbk_itemOptions.add(frm_other, sticky = "nsew", text = "Other")
 
 # Customer info panel
-frm_customerInfo = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
+frm_customerInfo = Frame(window, relief = RAISED, borderwidth = 2, background = bestbuyblue)
 lbl_customerSearch = Label(frm_customerInfo, text = "Customer Search:", foreground = "white",
-                           background = "#1072e3", justify = "left", anchor = "w")
+                           background = bestbuyblue, justify = "left", anchor = "w")
 ent_customerSearch = Entry(frm_customerInfo)
 ent_customerSearch.bind('<Return>', getCustomerFromText)
 txt_customerInfo = Text(frm_customerInfo, width = 28)
