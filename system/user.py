@@ -39,7 +39,7 @@ class User:
         self.email = user["email"]
         self.address = user["address"]
         self.memberInfo = user["memberInfo"]
-        return self.displayUser()
+        return user
     
 class Employee(User):
     def __init__(self):

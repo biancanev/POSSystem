@@ -97,9 +97,9 @@ class Item:
     
 class Cart:
     def __init__(self):
-        self.subtotal = int()
-        self.tax = int()
-        self.total = int()
+        self.subtotal = float()
+        self.tax = float()
+        self.total = float()
         self.items = []
     def addItemToCart(self, num):
         try:
@@ -128,7 +128,7 @@ class Cart:
         return cart
     def displayCartTotals(self):
         totals = ""
-        totals += "Subtotal: " + str(self.subtotal) + "\nTax: " + str(self.tax) + "\nTotal: " + str(self.total)
+        totals += "Subtotal: " + f'{self.subtotal:.2f}' + "\nTax: " + f'{self.tax:.2f}' + "\nTotal: " + f'{self.total:.2f}'
         return totals
                    
 class Order(Cart):

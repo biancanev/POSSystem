@@ -35,6 +35,16 @@ def getItemFromText(event = None):
     txt_itemInfo.configure(state = "disabled")
     return
 
+def getCustomerFromText(event = None):
+    phoneNumber = ent_customerSearch.get()
+    order.user.getUserByPhoneNumber(phoneNumber)
+    txt_customerInfo.configure(state = "normal")
+    for i in range(4):
+        txt_customerInfo.delete(str(float(i + 1)), END)
+    txt_customerInfo.insert("1.0", order.user.displayUser())
+    txt_customerInfo.configure(state = "disabled")
+    return
+
 def get_path(filename):
     if hasattr(sys, "_MEIPASS"):
         return os.path.join(sys._MEIPASS, filename)
@@ -127,7 +137,7 @@ frm_customerInfo = Frame(window, relief = RAISED, borderwidth = 2, background = 
 lbl_customerSearch = Label(frm_customerInfo, text = "Customer Search:", foreground = "white",
                            background = "#1072e3", justify = "left", anchor = "w")
 ent_customerSearch = Entry(frm_customerInfo)
-ent_customerSearch.bind('<Return>', order.user.getUserByPhoneNumber())
+ent_customerSearch.bind('<Return>', getCustomerFromText)
 txt_customerInfo = Text(frm_customerInfo, width = 28)
 
 txt_customerInfo.configure(state = "disabled")
