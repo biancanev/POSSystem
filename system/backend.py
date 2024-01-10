@@ -124,7 +124,7 @@ class Cart:
     def displayCartItems(self):
         cart = ""
         for item in self.items:
-            cart += f'{str(item.id):12}' + "   " + f'{item.name:20}' + "  " + "$" + f'{item.price:6.2f}' + "\n"
+            cart += f'{str(item.id):12}' + "   " + f'{item.name:18}' + "  " + "$" + f'{item.price:8.2f}' + "\n"
         return cart
     def displayCartTotals(self):
         totals = ""
