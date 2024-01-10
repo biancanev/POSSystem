@@ -1,9 +1,9 @@
-import tkinter as tk
-# from tkinter import ttk
 from tkinter import *
 from PIL import ImageTk, Image
 from pathlib import Path
 import backend
+import os
+import sys
 
 # Order creation
 order = backend.Order()
@@ -24,9 +24,15 @@ def getItemFromText(event=None):
     #update totals text
     return
 
+def get_path(filename):
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, filename)
+    else:
+        return filename
+
 # Window
 window  = Tk()
-# window.attributes('-fullscreen', True)
+window.attributes('-fullscreen', True)
 window.option_add("*Font", 'Verdana 14')
 window.rowconfigure(0, weight = 1)
 window.columnconfigure(0, minsize = 250, weight = 1)
@@ -36,7 +42,7 @@ window.columnconfigure(2, minsize = 300, weight = 1)
 # Logo
 root_dir = Path(__file__).resolve().parent.parent
 fileName = root_dir / "system" / "bestbuy.png"
-img = Image.open(fileName)
+img = Image.open(get_path("bestbuy.png"))
 photo = ImageTk.PhotoImage(img)
 window.wm_iconphoto(False, photo)
 
