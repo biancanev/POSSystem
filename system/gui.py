@@ -123,8 +123,4 @@ btn_quit.grid(row = 1, column = 0, padx = 10, pady = 5, sticky = "ew")
 frm_customerInfo.grid(row = 0, column = 2, sticky = "nsew")
 frm_customerInfo.grid_columnconfigure(0, weight = 1)
 
-# frm_admin.pack(fill = "both", side = "left", expand = True)
-# frm_middle.pack(fill = "both", side = "left", expand = True)
-# frm_customerInfo.pack(fill = "both", side = "left", expand = True)
-
 window.mainloop()
