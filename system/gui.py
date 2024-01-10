@@ -38,6 +38,21 @@ def get_path(filename):
         return os.path.join(sys._MEIPASS, filename)
     else:
         return filename
+    
+def openHistoryWindow(event = None):
+    historyWindow = Tk()
+    historyWindow.title("Purchase History")
+    historyWindow.option_add("*Font", 'Verdana 14')
+
+    frm_purchaseHistory = Frame(historyWindow)
+    txt_purchaseHistory = Text(frm_purchaseHistory)
+    btn_close = Button(historyWindow, text = "Close", anchor = "e")
+
+    txt_customerInfo.grid(row = 0, column = 0, sticky = "ew")
+    frm_purchaseHistory.grid(row = 1, column = 0, sticky = "ew")
+    btn_close.grid(row = 2, column = 0, padx = 10)
+
+    historyWindow.mainloop()
 
 # Window
 window  = Tk()
@@ -91,6 +106,12 @@ txt_itemInfo.configure(state = "disabled")
 cnv_itemPic = Canvas(frm_itemInfo)
 nbk_itemOptions = ttk.Notebook(frm_itemInfo)
 frm_protection = Frame(nbk_itemOptions)
+btn_prot1 = Button(frm_protection, text = "1-Year Protection")
+btn_prot2 = Button(frm_protection, text = "2-Year Protection")
+btn_prot3 = Button(frm_protection, text = "3-Year Protection")
+btn_prot4 = Button(frm_protection, text = "4-Year Protection")
+btn_appleCare = Button(frm_protection, text = "Apple Care")
+prot_plan_list = [btn_prot1, btn_prot2, btn_prot3, btn_prot4, btn_appleCare]
 frm_services = Frame(nbk_itemOptions)
 frm_accessories = Frame(nbk_itemOptions)
 frm_other = Frame(nbk_itemOptions)
@@ -101,8 +122,12 @@ nbk_itemOptions.add(frm_other, sticky = "nsew", text = "Other")
 
 # Customer info panel
 frm_customerInfo = Frame(window, relief = RAISED, borderwidth = 2, background = "#1072e3")
+lbl_customerSearch = Label(frm_customerInfo, text = "Customer Search:", foreground = "white",
+                           background = "#1072e3", justify = "left", anchor = "w")
+ent_customerSearch = Entry(frm_customerInfo)
+ent_customerSearch.bind('<Return>', )
 txt_customerInfo = Text(frm_customerInfo, width = 28)
-txt_customerInfo.insert("1.0", "Customer Info:\n" + order.user.displayUser())
+
 txt_customerInfo.configure(state = "disabled")
 btn_quit = Button(frm_customerInfo, text = "Quit", command = window.destroy)
 
@@ -126,13 +151,22 @@ frm_middle.grid_rowconfigure(3, weight = 1)
 txt_itemInfo.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = "ew")
 cnv_itemPic.grid(row = 1, column = 0, padx = 10, sticky = "ew")
 nbk_itemOptions.grid(row = 2, column = 0, padx = 10, pady = 10, sticky = "ew")
+for i in range(5):
+    if i % 2 == 0:
+        prot_plan_list[i].grid(row = i, column = 0, padx = 10, pady = 10, sticky = "ew")
+    else:
+        prot_plan_list[i].grid(row = i, column = 0, padx = 10, sticky = "ew")
 frm_itemInfo.grid(row = 0, column = 2, sticky = "nsew")
 frm_itemInfo.grid_columnconfigure(0, weight = 1)
 
-txt_customerInfo.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = "nsew")
-btn_quit.grid(row = 1, column = 0, padx = 10, sticky = "ew")
+lbl_customerSearch.grid(row = 0, column = 0, padx = 10, sticky = "ew")
+ent_customerSearch.grid(row = 1, column = 0, padx = 10, sticky = "ew")
+txt_customerInfo.grid(row = 2, column = 0, padx = 10, sticky = "nsew")
+btn_quit.grid(row = 3, column = 0, padx = 10, pady = 10, sticky = "ew")
 frm_customerInfo.grid(row = 0, column = 3, sticky = "nsew")
-frm_customerInfo.grid_rowconfigure(0, weight = 1)
+frm_customerInfo.grid_rowconfigure(2, weight = 1)
 frm_customerInfo.grid_columnconfigure(0, weight = 1)
 
 window.mainloop()
+
+
