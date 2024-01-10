@@ -56,7 +56,6 @@ class Item:
     def saveItemToDB(self):
         newItem = {"id": self.id, "upc": self.upc, "price": self.price, "name": self.name, "quantity": 0}
         items.insert_one(newItem)
-        
     def addItemToDB(self, quantity):
         query = {"id": self.id}
         item = items.find_one(query)
@@ -101,18 +100,21 @@ class Cart:
             newItem.findItemByName(num)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
         self.subtotal += newItem.price
-        self.tax = round(0.1025 * self.subtotal, 2)
-        self.total = round(self.subtotal + self.tax, 2)
         return
     def displayCartItems(self):
         cart = ""
         for item in self.items:
-            cart += f'{str(item.id):12}' + "    " + f'{item.name:40}' + "  " + "$" + f'{item.price:6.2f}' + "\n"
+            cart += f'{str(item.id):12}' + "   " + f'{item.name:20}' + "  " + "$" + f'{item.price:6.2f}' + "\n"
         return cart
     def displayCartTotals(self):
         totals = ""
-        totals += f'Subtotal: {self.subtotal:.2f}\nTax: {self.tax:.2f}\nTotal: {self.total:.2f}'
+        totals += "Subtotal: " + str(self.subtotal) + "\nTax: " + str(self.tax) + "\nTotal: " + str(self.total)
         return totals
+    def calculateTotal(self):
+        checkSub = 0
+        for item in self.items:
+            checkSub += item.price
+        self.total = self.subtotal + self.tax
                    
 class Order(Cart):
     def __init__(self):
