@@ -1,4 +1,5 @@
 import pymongo as pm
+from datetime import date
 from dotenv import load_dotenv
 import os
 import user
@@ -8,11 +9,11 @@ import gridfs
 load_dotenv()
 client = pm.MongoClient(os.getenv("MONGODB_STR"))
 #Load database and columns
-itemdb = client["itemdb"]
-items = itemdb["Items"]
-orders = itemdb["Orders"]
-fsdb = client["filesystem"]
-fs = gridfs.GridFS(fsdb)
+itemdb = client["itemdb"] #database for information related to items orders
+items = itemdb["Items"] #collection of items
+orders = itemdb["Orders"] #collection of orders
+fsdb = client["filesystem"] #database for filesystem(images)
+fs = gridfs.GridFS(fsdb) #filesystem using GridFS
 
 class Item:
     def __init__(self):
@@ -95,6 +96,14 @@ class Item:
         item = "Name: " + self.name + "\nID: " + str(self.id) + "\nUPC: " + str(self.upc)
         return item
     
+class ProtectionPlan(Item):
+    def __init__(self):
+        self.childID = int()
+        self.associatedSerial = int()
+        self.expDate = str()
+        Item.__init__(self)
+    def isPlanStillValid(self)->bool:
+        return True if date.today() >= self.expDate else False
 class Cart:
     def __init__(self):
         self.subtotal = float()
