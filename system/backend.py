@@ -25,6 +25,11 @@ class Item:
         self.imageFilePath = str()
         self.addons = {"plans": list(), "services": list, "accessories": list()}
     def findItemById(self, id):
+        """_summary_
+
+        Args:
+            id (_type_): _description_
+        """
         query = {"id": id}
         item = items.find_one(query)
         if item is not None:
@@ -110,21 +115,21 @@ class Cart:
         self.tax = float()
         self.total = float()
         self.items = []
-    def addItemToCart(self, num):
+    def addItemToCart(self, val:int|str):
         try:
-            num = int(num)
+            val = int(val)
         except:
             pass
         newItem = Item()
-        if type(num) is int:
-            if len(str(num)) == 12:
-                newItem.findItemByUPC(num)
+        if type(val) is int:
+            if len(str(val)) == 12:
+                newItem.findItemByUPC(val)
                 self.items.append(newItem) if newItem.isValidItem() else print("Invalid UPC")
             else:
-                newItem.findItemById(num)
+                newItem.findItemById(val)
                 self.items.append(newItem) if newItem.isValidItem() else print("Invalid ID")
         else:
-            newItem.findItemByName(num)
+            newItem.findItemByName(val)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
         self.subtotal += newItem.price
         self.tax = 0.1025 * self.subtotal
