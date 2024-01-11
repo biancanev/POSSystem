@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from PIL import ImageTk, Image
 from pathlib import Path
 import backend
@@ -10,13 +10,6 @@ bestbuyblue = "#1072e3"
 
 # Order creation
 order = backend.Order()
-# test
-item = backend.Item()
-order.user.fname = "John"
-order.user.lname = "Smith"
-order.user.phone = 1234567890
-order.user.email = "username@gmail.com"
-order.user.address = "12345 Street Name Blvd."
 
 def getItemFromText(event = None):
     id = ent_search.get()
@@ -46,6 +39,13 @@ def getCustomerFromText(event = None):
     txt_customerInfo.insert("1.0", order.user.displayUser())
     txt_customerInfo.configure(state = "disabled")
     return
+
+def confirmQuit():
+    res = messagebox.askquestion("Quit POS System", "Are you sure you want to quit the Best Buy POS system?")
+    if res == "yes":
+        window.destroy()
+    else:
+        return
 
 def get_path(filename):
     if hasattr(sys, "_MEIPASS"):
@@ -170,7 +170,7 @@ ent_customerSearch.bind('<Return>', getCustomerFromText)
 txt_customerInfo = Text(frm_customerInfo, width = 28)
 
 txt_customerInfo.configure(state = "disabled")
-btn_quit = Button(frm_customerInfo, text = "Quit", command = window.destroy)
+btn_quit = Button(frm_customerInfo, text = "Quit", command = confirmQuit)
 
 # Grid
 cnv_logo.grid(row = 0, column = 0, pady = 10)

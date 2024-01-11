@@ -28,10 +28,15 @@ class User:
     def deleteUser(self, username:str):
         users.delete_one({"username": username})
     def displayUser(self):
+        if not self.username:
+            return "Could not find user"
         user = "Name: " + self.fname + " " + self.lname + "\nPhone #: " + str(self.phone) + "\nEmail: " + self.email + "\nAddress: " + self.address + "\nBest Buy Membership: " + self.memberInfo["type"]
         return user
     def getUserByPhoneNumber(self, phone):
-        user = users.find_one({"phone": phone})
+        query = {"phone": int(phone)}
+        user = users.find_one(query)
+        if user is None:
+            return "Invalid Phone Number"
         self.username = user["username"]
         self.fname = user["fname"]
         self.lname = user["lname"]
