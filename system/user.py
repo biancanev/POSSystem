@@ -16,6 +16,7 @@ class User:
         self.phone = int()
         self.email = str()
         self.address = str()
+        self.memberInfo = dict()
     def createUser(self):
         newUser = {"username": self.username, "password": self.password, "fname": self.fname, "lname": self.lname, "phone": self.phone, "email": self.email}
         users.insert_one(newUser)
@@ -26,6 +27,24 @@ class User:
         return user
     def deleteUser(self, username:str):
         users.delete_one({"username": username})
+    def displayUser(self):
+        if not self.username:
+            return "Could not find user"
+        user = "Name: " + self.fname + " " + self.lname + "\nPhone #: " + str(self.phone) + "\nEmail: " + self.email + "\nAddress: " + self.address + "\nBest Buy Membership: " + self.memberInfo["type"]
+        return user
+    def getUserByPhoneNumber(self, phone):
+        query = {"phone": int(phone)}
+        user = users.find_one(query)
+        if user is None:
+            return "Invalid Phone Number"
+        self.username = user["username"]
+        self.fname = user["fname"]
+        self.lname = user["lname"]
+        self.phone = user["phone"]
+        self.email = user["email"]
+        self.address = user["address"]
+        self.memberInfo = user["memberInfo"]
+        return user
     
 class Employee(User):
     def __init__(self):

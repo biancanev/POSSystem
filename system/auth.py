@@ -36,10 +36,3 @@ def deleteAuthUser(username:str, password:str):
         user.User().deleteUser(username)
     return
 
-#test casing
-#createAuthUser("testUser", "123456", "Test", "User", 1234567890, "test.user@test.com")
-uname = input("Enter Username: ")
-pwd = input("Enter Password: ")
-newUser = authenticateUser(uname, pwd)
-if newUser is not None:
-    print("Auth Success:", newUser["username"], "has information", newUser["fname"], newUser["lname"])
