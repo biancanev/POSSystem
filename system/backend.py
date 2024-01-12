@@ -1,6 +1,7 @@
 import pymongo as pm
 from datetime import date
 from dotenv import load_dotenv
+from microservice import *
 import os
 import user
 import gridfs
@@ -24,12 +25,7 @@ class Item:
         self.quantity = int()
         self.imageFilePath = str()
         self.addons = {"plans": list(), "services": list, "accessories": list()}
-    def findItemById(self, id):
-        """_summary_
-
-        Args:
-            id (_type_): _description_
-        """
+    def findItemById(self, id:int):
         query = {"id": id}
         item = items.find_one(query)
         if item is not None:
@@ -131,6 +127,7 @@ class Cart:
         else:
             newItem.findItemByName(val)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
+        calculateNewRevProfit(newItem.id, 1)
         self.subtotal += newItem.price
         self.tax = 0.1025 * self.subtotal
         self.total = self.subtotal + self.tax

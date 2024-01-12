@@ -10,7 +10,10 @@ items = itemdb["Items"] #collection of items
 
 def calculateNewRevProfit(id:int, quantity:int):
     item = items.find_one({"id":id})
+    print(item)
     rev = item["revenue"] + item["price"] * quantity
     profit = rev - item["costPerUnit"] * quantity
-    items.update_one({"id":id}, {"$set": {"revenue": rev, "profit": profit}})
+    sold = item["sold"] + quantity
+    items.update_one({"id":id}, {"$set": {"revenue": rev, "profit": profit, "sold": sold}})
+    return
     
