@@ -2,6 +2,7 @@ import pymongo as pm
 from datetime import date
 from dotenv import load_dotenv
 from microservice import *
+import re
 import os
 import user
 import gridfs
@@ -159,7 +160,22 @@ class Order(Cart):
     def generateOrderNumber(self):
         cursor = orders.find().limit(1).sort({"$natural":-1})
         lastGeneratedNumber = cursor[0]["orderNumber"]
-        print(lastGeneratedNumber)
+        old = re.split('(\d+)', lastGeneratedNumber)
+        letter = old[0]
+        num = old[1]
+        if(int(num) != 999):
+            num = str(int(num) + 1)
+            return letter + num
+        else:
+            letter = list(letter)
+            char = letter[len(letter)-1]
+            if(char == 'Z'):
+                letter[len(letter)-1] = 'A'
+                letter[len(letter)-2] = chr(ord(char)+1)
+            else:
+                letter[len(letter)-1] = chr(ord(char)+1)
+            letter = "".join(letter)
+        return letter + "000"
     def changeDeliveryAddress(self, newAddr:str)->str:
         self.deliveryAddress = newAddr
         return newAddr
@@ -175,14 +191,4 @@ class Order(Cart):
     def voidOrder(self):
         pass
     
-    
-        
-
-#exampleOrder = {"orderNumber": "ABC123", "cart": {"subtotal": 12.34, "tax": 0.01025, "total": 13.61, "items": [{"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}]}}
-#orders.insert_one(exampleOrder)
-#test_item = {"id": 123456, "upc": 123456789012, "price": 12.34, "name": "test"}
-
-#items.insert_one(test_item)
-#query = {"name": "test"}
-#results = items.find_one(query)
-#print(results["id"])
+print(Order().generateOrderNumber())
