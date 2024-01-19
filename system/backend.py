@@ -196,5 +196,3 @@ class Order(Cart):
         return
     def voidOrder(self):
         pass
-    
-print(Order().generateOrderNumber())
