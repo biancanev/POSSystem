@@ -113,6 +113,7 @@ class Cart:
         self.total = float()
         self.items = []
     def addItemToCart(self, val:int|str):
+        res = True
         try:
             val = int(val)
         except:
@@ -128,11 +129,13 @@ class Cart:
         else:
             newItem.findItemByName(val)
             self.items.append(newItem) if newItem.isValidItem() else print("Invalid Name")
+        if not newItem.isValidItem():
+            return False
         calculateNewRevProfit(newItem.id, 1)
         self.subtotal += newItem.price
         self.tax = 0.1025 * self.subtotal
         self.total = self.subtotal + self.tax
-        return
+        return True
     def displayCartItems(self):
         cart = ""
         for item in self.items:
@@ -183,11 +186,14 @@ class Order(Cart):
         return True if self.orderNumber is not None and self.deliveryAddress is not None else False
     def saveOrder(self)->int:
         if self.isValidOrder():
-            newOrder = {"orderNumber": self.orderNumber, "cart": {"subtotal": self.subtotal, "tax": self.tax, "total": self.total, "items": self.items}, "user": self.user}
+            newOrder = {"orderNumber": self.generateOrderNumber(), "cart": {"subtotal": self.subtotal, "tax": self.tax, "total": self.total, "items": self.items}, "user": self.user}
             orders.insert_one(newOrder)
             return 0
         print("Cannot save invalid order. Reason: Order field is none")
         return -1
+    def changeDeliveryAddress(self, newAddr:str):
+        self.deliveryAddress = newAddr
+        return
     def voidOrder(self):
         pass
     

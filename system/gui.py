@@ -13,7 +13,10 @@ order = backend.Order()
 
 def getItemFromText(event = None):
     id = ent_search.get()
-    order.addItemToCart(id)
+    res = order.addItemToCart(id)
+    if not res:
+        messagebox.showerror("Invalid Input", "Invalid item entered.")
+        return 
     txt_itemsDisplay.configure(state = "normal")
     for i in range(len(order.items)):
         txt_itemsDisplay.delete(str(float(i + 1)), END)
